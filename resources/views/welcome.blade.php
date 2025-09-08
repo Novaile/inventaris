@@ -10,10 +10,8 @@
     <div class="absolute inset-0 bg-cover bg-center blur-sm" style="background-image: url('/images/ngab.jpg')"></div>
     <div class="relative z-10 w-full max-w-sm p-6 bg-white rounded shadow bg-zinc-700">
         <h1 class="text-2xl font-bold text-center text-white mb-6">Login</h1>
-
         <form method="POST" action="{{ route('login') }}" class="space-y-4">
             @csrf
-
             <div>
                 <label for="email" class="block text-sm font-medium text-white">Email</label>
                 <input id="email" type="email" name="email" value="{{ old('email') }}" required autofocus

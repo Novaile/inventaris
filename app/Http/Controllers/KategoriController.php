@@ -4,46 +4,55 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Kategori;
+use Illuminate\Support\Facades\Auth;
 
 class KategoriController extends Controller
 {
     public function store(Request $request)
-{
-    $request->validate([
-        'nama' => 'required|string|max:100'
-    ]);
+    {
+        if (Auth::user()->role !== 'admin') {
+            return redirect()->route('barang')->with('error', 'Akses ditolak!');
+        }
 
-    Kategori::create([
-        'nama' => $request->nama
-    ]);
+        $request->validate([
+            'nama' => 'required|string|max:100'
+        ]);
 
-    return redirect()->route('barang')->with('success', 'Kategori berhasil ditambahkan');
-}
+        Kategori::create([
+            'nama' => $request->nama
+        ]);
 
-public function update(Request $request, $id)
-{
-    $request->validate(['nama' => 'required|string|max:255']);
-
-    $kategori = Kategori::findOrFail($id);
-    $kategori->update(['nama' => $request->nama]);
-
-    return back()->with('success', 'Kategori berhasil diupdate');
-}
-
-public function destroy($id)
-{
-    $kategori = Kategori::findOrFail($id);
-
-    // lebih cepat pakai exists()
-    if ($kategori->barang()->exists()) {
-        return back()->with('error', 'Kategori tidak bisa dihapus karena masih digunakan oleh barang.');
+        return redirect()->route('barang')->with('success', 'Kategori berhasil ditambahkan');
     }
 
-    $kategori->delete();
-    return back()->with('success', 'Kategori berhasil dihapus.');
+    public function update(Request $request, $id)
+    {
+        if (Auth::user()->role !== 'admin') {
+            return back()->with('error', 'Akses ditolak!');
+        }
+
+        $request->validate(['nama' => 'required|string|max:255']);
+
+        $kategori = Kategori::findOrFail($id);
+        $kategori->update(['nama' => $request->nama]);
+
+        return back()->with('success', 'Kategori berhasil diupdate');
+    }
+
+    public function destroy($id)
+    {
+        if (Auth::user()->role !== 'admin') {
+            return back()->with('error', 'Akses ditolak!');
+        }
+
+        $kategori = Kategori::findOrFail($id);
+
+        // lebih cepat pakai exists()
+        if ($kategori->barang()->exists()) {
+            return back()->with('error', 'Kategori tidak bisa dihapus karena masih digunakan oleh barang.');
+        }
+
+        $kategori->delete();
+        return back()->with('success', 'Kategori berhasil dihapus.');
+    }
 }
-
-
-
-}
-

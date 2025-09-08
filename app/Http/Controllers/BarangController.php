@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Kategori;
 use Illuminate\Http\Request;
 use App\Models\Barang;
+use Illuminate\Support\Facades\Auth;
 
 
 class BarangController extends Controller
@@ -14,14 +15,20 @@ class BarangController extends Controller
         $barang = Barang::with('kategori')->get();
         $kategori = Kategori::all();
         return view('barang', compact('barang', 'kategori'));
-
     }
     public function create(){
+        if (Auth::user()->role !== 'admin') {
+            return redirect()->route('barang')->with('error', 'Akses ditolak!');
+        }
         $kategori = Kategori::all();
         return view('barang_create', compact('kategori'));
+
     }
     public function store(Request $request)
 {
+    if (Auth::user()->role !== 'admin') {
+            return redirect()->route('barang')->with('error', 'Akses ditolak!');
+        }
     $request->validate([
         'nama'=> 'required',
         'kategori_id'=> 'required|exists:kategori,id',
@@ -41,6 +48,9 @@ class BarangController extends Controller
 }
 
     public function destroy($id){
+        if (Auth::user()->role !== 'admin') {
+            return redirect()->route('barang')->with('error', 'Akses ditolak!');
+        }
         $barang = Barang::findOrFail($id);
         $barang->delete();
         return redirect()->route('barang')->with('success','sukses menghapus barang');
@@ -48,6 +58,9 @@ class BarangController extends Controller
 
         public function edit($id)
 {
+    if (Auth::user()->role !== 'admin') {
+            return redirect()->route('barang')->with('error', 'Akses ditolak!');
+        }
     $barang = Barang::with('kategori')->get();
     $barangToEdit = Barang::findOrFail($id);
     $kategori = Kategori::all();

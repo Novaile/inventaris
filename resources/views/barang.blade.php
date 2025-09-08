@@ -17,16 +17,13 @@
             </button>
         </div>
 
-        @auth
-        @if(Auth::user()->role === 'admin')
+
         <button onclick="toggleKategoriForm()" class="bg-indigo-600 text-white px-4 py-2 rounded hover:bg-blue-700">
             Kelola Kategori
         </button>
         <button onclick="toggleAddForm()" class="bg-indigo-600 text-white px-4 py-2 rounded hover:bg-blue-700">
             Tambah Barang
-        </button>
-        @endif
-        @endauth
+
         </div>
         <table class="min-w-full divide-y divide-gray-700">
         <thead class="bg-gray-800">
