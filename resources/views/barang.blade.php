@@ -5,9 +5,11 @@
 <meta name="csrf-token" content="{{ csrf_token() }}">
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-8">
     <div class="bg-gray-800 shadow-md rounded-lg p-6">
-        <div class="flex items-center justify-between mb-4">
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4 gap-2 sm:gap-0">
         <h2 class="text-2xl font-bold text-green-500">Data Barang</h2>
-        <div class="relative">
+        <div class="flex flex-col sm:flex-row gap-2 items-start sm:items-center w-full sm:w-auto">
+    <div class="relative w-full sm:w-auto">
+
             <input type="text" id="searchInput" name="search"
                 placeholder="Cari nama barang..."
                 class="bg-gray-800 border-gray-600 text-white rounded-md shadow-sm px-3 py-2 text-sm focus:ring-green-400 focus:border-green-400 w-64">
@@ -16,56 +18,59 @@
             Reset
             </button>
         </div>
-
+    </div>
 
         <button onclick="toggleKategoriForm()" class="bg-indigo-600 text-white px-4 py-2 rounded hover:bg-blue-700">
             Kelola Kategori
         </button>
         <button onclick="toggleAddForm()" class="bg-indigo-600 text-white px-4 py-2 rounded hover:bg-blue-700">
             Tambah Barang
+        </button>
 
         </div>
-        <table class="min-w-full divide-y divide-gray-700">
-        <thead class="bg-gray-800">
-                <tr>
-                    <th class="px-4 py-2 text-left font-medium text-gray-300">No</th>
-                    <th class="px-4 py-2 text-left font-medium text-gray-300">Nama Barang</th>
-                    <th class="px-4 py-2 text-left font-medium text-gray-300">Kode Barang</th>
-                    <th class="px-4 py-2 text-left font-medium text-gray-300">Kategori</th>
-                    <th class="px-4 py-2 text-left font-medium text-gray-300">Stok</th>
-                    <th class="px-4 py-2 text-left font-medium text-gray-300">Aksi</th>
-                </tr>
-            </thead>
-            <tbody id="barangTableBody" class="divide-y divide-gray-500">
-                @foreach ($barang as $index => $item)
-                <tr class="odd:bg-gray-800 even:bg-gray-900">
-                    <td class="px-4 py-2 text-gray-200">{{ $index + 1 }}</td>
-                    <td class="px-4 py-2 text-gray-200">{{ $item->nama }}</td>
-                    <td class="px-4 py-2 text-gray-200">{{ $item->kode_barang }}</td>
-                    <td class="px-4 py-2 text-gray-200">{{ $item->kategori->nama }}</td>
-                    <td class="px-4 py-2 text-gray-200">{{ $item->stok }}</td>
-                    <td class="px-4 py-2 text-gray-200">
-                        <a href="{{ route('barang.edit', $item->id) }}" class="text-blue-600 hover:underline mr-2">Edit</a>
-                        <form action="{{ route('barang.destroy', $item->id) }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus barang ini?');">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" class="text-red-500 hover:underline">Hapus</button>
-                        </form>
-                    </td>
-                </tr>
-                @endforeach
+        <div class="overflow-x-auto">
+    <table class="min-w-full divide-y divide-gray-700 text-xs md:text-sm lg:text-base">
+  <thead class="bg-gray-800">
+    <tr>
+      <th class="px-2 py-1 md:px-4 md:py-2 text-left font-medium text-gray-300">No</th>
+      <th class="px-2 py-1 md:px-4 md:py-2 text-left font-medium text-gray-300">Nama Barang</th>
+      <th class="px-2 py-1 md:px-4 md:py-2 text-left font-medium text-gray-300">Kategori</th>
+      <th class="px-2 py-1 md:px-4 md:py-2 text-left font-medium text-gray-300">Stok</th>
+      <th class="px-2 py-1 md:px-4 md:py-2 text-left font-medium text-gray-300">Aksi</th>
+    </tr>
+  </thead>
+  <tbody id="barangTableBody" class="divide-y divide-gray-500">
+    @foreach ($barang as $index => $item)
+    <tr class="odd:bg-gray-800 even:bg-gray-900">
+      <td class="px-2 py-1 md:px-4 md:py-2 text-gray-200">{{ $index + 1 }}</td>
+      <td class="px-2 py-1 md:px-4 md:py-2 text-gray-200">{{ $item->nama }}</td>
+      <td class="px-2 py-1 md:px-4 md:py-2 text-gray-200">{{ $item->kategori->nama }}</td>
+      <td class="px-2 py-1 md:px-4 md:py-2 text-gray-200">{{ $item->stok }}</td>
+      <td class="px-2 py-1 md:px-4 md:py-2 text-gray-200">
+        <div class="flex flex-col md:flex-row gap-1 md:gap-2">
+          <a href="{{ route('barang.edit', $item->id) }}" class="text-blue-600 hover:underline">Edit</a>
+          <form action="{{ route('barang.destroy', $item->id) }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus barang ini?');">
+            @csrf
+            @method('DELETE')
+            <button type="submit" class="text-red-500 hover:underline">Hapus</button>
+          </form>
+        </div>
+      </td>
+    </tr>
+    @endforeach
 
-                @if ($barang->isEmpty())
-                <tr>
-                    <td colspan="5" class="text-center text-gray-400 py-4">Tidak ada data barang.</td>
-                </tr>
-                @endif
-            </tbody>
-        </table>
+    @if ($barang->isEmpty())
+    <tr>
+      <td colspan="5" class="text-center text-gray-400 py-4">Tidak ada data barang.</td>
+    </tr>
+    @endif
+  </tbody>
+</table>
+        </div>
 
         {{-- kategori --}}
 <div id="formKategori" class="fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 flex justify-center items-center hidden z-50">
-    <div class="bg-white p-6 rounded-lg shadow-lg w-[500px] relative">
+    <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-md relative overflow-y-auto max-h-full">
         <h2 class="text-xl font-semibold mb-4">Kelola Kategori</h2>
 
         <!-- List Kategori -->
@@ -141,12 +146,6 @@
                 <input type="text" name="nama" class="w-full border border-gray-300 px-3 py-2 rounded" required>
             </div>
             <div class="mb-4">
-                <label class="block text-gray-700">Kode Barang</label>
-
-                <input type="text" name="kode_barang" id="kode_barang" class="w-full border border-gray-300 px-3 py-2 rounded">
-                <button type="button" onclick="startScanner()" class="bg-blue-500 text-white px-3 rounded hover:bg-blue-600">
-                    Scan
-                </button>
 
             </div>
             <div class="mb-4">

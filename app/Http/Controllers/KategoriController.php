@@ -14,6 +14,10 @@ class KategoriController extends Controller
             return redirect()->route('barang')->with('error', 'Akses ditolak!');
         }
 
+        if (Kategori::where('nama', $request->nama)->exists()) {
+            return back()->with('error', 'Kategori sudah ada, gunakan nama lain.');
+        }
+
         $request->validate([
             'nama' => 'required|string|max:100'
         ]);

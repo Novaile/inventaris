@@ -7,11 +7,10 @@
 @section('content')
 @section('title', 'Dashboard')
 
-
-<div class="flex flex-wrap gap-6 justify-between items-start mt-4 relative ">
+<div class="flex flex-col md:flex-row md:flex-wrap gap-6 justify-between items-start mt-4 relative">
     <div class="flex gap-6">
     <!-- Total Barang -->
-    <div class="bg-emerald-600 rounded shadow w-[282px] overflow-hidden">
+    <div class="bg-emerald-600 rounded shadow w-full md:w-[282px] overflow-hidden">
         <div class="p-4 flex justify-between items-center">
             <div>
                 <div class="text-sm text-white">Total Barang</div>
@@ -35,7 +34,7 @@
     </div>
 
     <!-- Total Stok Barang -->
-    <div class="bg-emerald-600 rounded shadow w-[282px] overflow-hidden">
+    <div class="bg-emerald-600 rounded shadow w-full md:w-[282px] overflow-hidden">
         <div class="p-4 flex justify-between items-center">
             <div>
                 <div class="text-sm text-white">Total Stok Barang</div>
@@ -60,7 +59,7 @@
 </div>
 
  {{-- transaksi terakhir --}}
-    <div class="bg-sky-900 p-4 rounded shadow w-full md:w-1/3 absolute top-0 right-4">
+    <div class="bg-sky-900 p-4 rounded shadow w-full md:w-1/3 md:absolute md:top-0 md:right-4">
         <h2 class="text-lg text-white font-bold mb-2">Transaksi Terakhir</h2>
         @if($transaksiTerakhir->isEmpty())
             <p class="text-white">Belum ada transaksi</p>
@@ -90,7 +89,7 @@
 </div>
 
 {{-- stok menipis --}}
-<div class="bg-teal-900 p-4 rounded shadow w-[500px] md:w-[590px] mt-4 border border-gray-700">
+<div class="bg-teal-900 p-4 rounded shadow w-full md:w-[590px] mt-4 border border-gray-700">
   <h2 class="text-white mb-3">Stok Menipis</h2>
   <ul class="text-white space-y-2">
     @foreach ($stokMenipis as $barang)
@@ -102,6 +101,7 @@
   </ul>
 </div>
 
+{{-- Grafik --}}
 <div class="w-full md:w-[50%] mt-4">
     <div class="bg-gray-800 border border-gray-700 p-4 rounded shadow text-white">
         <h2 class="text-xl text-white mb-4">Grafik Barang Masuk & Keluar ({{ now()->year }})</h2>

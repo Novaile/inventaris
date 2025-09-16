@@ -33,8 +33,17 @@ class BarangController extends Controller
         'nama'=> 'required',
         'kategori_id'=> 'required|exists:kategori,id',
         'stok'=> 'required|integer|min:0',
-        'kode_barang' => 'nullable|string|max:255|unique:barang,kode_barang',
+        'kode_barang' => 'nullable|string|max:255',
     ]);
+
+    if (Barang::where('nama', $request->nama)->exists()) {
+        return back()->with('error', 'Nama barang sudah ada, tidak boleh duplikat!');
+    }
+
+    // Cek kode_barang duplikat (kalau user isi)
+    if (!empty($request->kode_barang) && Barang::where('kode_barang', $request->kode_barang)->exists()) {
+        return back()->with('error', 'Kode barang sudah digunakan, silakan pakai kode lain!');
+    }
 
     Barang::create([
         'nama'=> $request->nama,
@@ -74,7 +83,7 @@ public function update(Request $request, $id)
         'nama' => 'required',
         'kategori_id' => 'required|exists:kategori,id',
         'stok' => 'required|integer|min:0',
-        'kode_barang' => 'nullable|string|max:255|unique:barang,kode_barang,' . $id,
+        'kode_barang' => 'nullable|string|max:255',
     ]);
 
     $stokBaru = $request->stok;

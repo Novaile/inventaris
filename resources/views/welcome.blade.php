@@ -20,7 +20,6 @@
                     <p class="text-sm text-red-600 mt-1">{{ $message }}</p>
                 @enderror
             </div>
-
             <div>
                 <label for="password" class="block text-sm font-medium text-white">Password</label>
                 <input id="password" type="password" name="password" required
